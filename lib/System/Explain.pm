@@ -89,8 +89,8 @@ System::Explain - run a system command and explain the result
 
 =head1 SYNOPSIS
 
-    use System::Explain "command, verbose, errors";
-    sys qw(ls -al);
+  use System::Explain "command, verbose, errors";
+  sys qw(ls -al);
 
 The sys function runs a system command, checks the result, and comments on
 it to STDOUT.
