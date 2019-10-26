@@ -48,11 +48,23 @@
       },
       "test" : {
          "requires" : {
+            "Capture::Tiny" : "0",
             "Test::More" : "0.98"
          }
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/cxw42/System-Explain/issues"
+      },
+      "homepage" : "https://github.com/cxw42/System-Explain",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/cxw42/System-Explain.git",
+         "web" : "https://github.com/cxw42/System-Explain"
+      }
+   },
    "version" : "0.01",
    "x_authority" : "cpan:CXW",
    "x_contributors" : [
