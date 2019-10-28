@@ -1,0 +1,6 @@
+-i=2      # two-space indent
+-ci=2     # two-space continued-line indent
+-nola     # Do not outdent labels (if we ever add any)
+--paren-tightness=2
+--nocuddled-else
+--opening-brace-on-new-line

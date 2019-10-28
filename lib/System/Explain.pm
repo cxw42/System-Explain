@@ -1,3 +1,6 @@
+# Original author: Paul Johnson
+# Created:         Fri 12 Mar 1999 10:25:51 am
+
 package System::Explain;
 use 5.008001;
 use strict;
@@ -5,12 +8,28 @@ use warnings;
 
 our $VERSION = "0.01";
 
-# Copyright 1999-2012 by Paul Johnson (paul@pjcj.net)
+=encoding utf-8
 
-# documentation at __END__
+=head1 NAME
 
-# Original author: Paul Johnson
-# Created:         Fri 12 Mar 1999 10:25:51 am
+System::Explain - run a system command and explain the result
+
+=head1 SYNOPSIS
+
+  use System::Explain "command, verbose, errors";
+  sys qw(ls -al);
+
+The C<sys> function runs a system command, checks the result, and comments on
+it to STDOUT.
+
+=head1 DESCRIPTION
+
+System::Explain is a standalone release of L<System>, part of L<Gedcom>
+v1.20 and earlier.
+
+=head1 FUNCTIONS
+
+=cut
 
 use parent 'Exporter';
 
@@ -20,18 +39,36 @@ my $Command = 0;
 my $Errors  = 0;
 my $Verbose = 0;
 
+=head1 import
+
+Say C<use System::Explain "list, of, options"> to use this module.
+The options are: C<command> (to print the command before running it),
+C<error> (to report on the exit status), and C<verbose> (to do both of those).
+
+=cut
+
 sub import
 {
   my $class = shift;
-  my $args = "@_";
+  my $args  = "@_";
   $Command = $args =~ /\bcommand\b/i;
   $Errors  = $args =~ /\berror\b/i;
   $Verbose = $args =~ /\bverbose\b/i;
   $Command ||= $Verbose;
   $Errors  ||= $Verbose;
-  $class->export_to_level(1, "sys" ) if $args =~ /\bsys\b/i;
+  $class->export_to_level(1, "sys")  if $args =~ /\bsys\b/i;
   $class->export_to_level(1, "dsys") if $args =~ /\bdsys\b/i;
 }
+
+=head1 sys
+
+C<sys(@command);> runs C<@command> (by passing C<@command> to C<system()>) and
+optionally prints human-readable information about the result (specifically,
+about the return value of C<system()>).
+
+Returns the return value of the C<system()> call.
+
+=cut
 
 sub sys
 {
@@ -40,15 +77,22 @@ sub sys
   print "@command" if $Command;
   my $rc = 0xffff & system @command;
   print "\n" if $Command && !$rc && !$Verbose;
-  ret($rc);
+  _print_explanation_of($rc);
 }
+
+=head1 dsys
+
+As L</sys>, but dies if the C<system()> call fails.
+
+=cut
 
 sub dsys
 {
   die "@_ failed" if sys @_;
 }
 
-sub ret
+# Print the explanation
+sub _print_explanation_of
 {
   my ($rc) = @_;
   printf "  returned %#04x: ", $rc if $Errors && $rc;
@@ -75,30 +119,16 @@ sub ret
     }
     print "signal $rc\n" if $Errors;
   }
-  $rc;
+  return $rc;
 }
 
 1;
 __END__
 
-=encoding utf-8
+=head1 SEE ALSO
 
-=head1 NAME
-
-System::Explain - run a system command and explain the result
-
-=head1 SYNOPSIS
-
-  use System::Explain "command, verbose, errors";
-  sys qw(ls -al);
-
-The sys function runs a system command, checks the result, and comments on
-it to STDOUT.
-
-=head1 DESCRIPTION
-
-System::Explain is a standalone release of L<System>, part of L<Gedcom>
-v1.20 and earlier.
+L<IPC::System::Simple>, L<Proc::ChildError>, L<Process::Status>
+(among others).
 
 =head1 LICENSE
 
