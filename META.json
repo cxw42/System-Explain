@@ -65,7 +65,7 @@
          "web" : "https://github.com/cxw42/System-Explain"
       }
    },
-   "version" : "0.01",
+   "version" : "0.02",
    "x_authority" : "cpan:CXW",
    "x_contributors" : [
       "Christopher White <cxw@cpan.org>"
